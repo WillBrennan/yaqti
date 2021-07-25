@@ -1,0 +1,5 @@
+click
+requests
+py7zr
+yapf
+pytest
