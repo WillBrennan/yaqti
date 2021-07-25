@@ -2,4 +2,5 @@ click
 requests
 py7zr
 yapf
+xmltodict
 pytest

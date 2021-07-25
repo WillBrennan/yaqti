@@ -1,12 +1,10 @@
-# simple_qt
+# yaqti (Yet Another QT Installer - ya-q-ti!)
 ## overview
 
 
 ```bash
-python -m simple_qt install 
+python -m yaqti install 
 ```
-
-
 
 ```
 python -m pytest test/
