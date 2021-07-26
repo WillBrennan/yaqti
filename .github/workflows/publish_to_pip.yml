@@ -1,0 +1,31 @@
+name: Publish package to PIP
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  build-n-publish:
+    name: Publish package to PIP
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.8
+    - name: Install dependencies (poetry)
+      run: |
+        pip install poetry; poetry install
+    - name: Update package version
+      run: |
+        poetry version $(git describe --tags --abbrev=0)
+    - name: Build package
+      run: |
+        poetry build
+    - name: Add pypi token
+      run: | 
+        poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}
+    - name: Publish to pypi
+      run: |
+        poetry publish

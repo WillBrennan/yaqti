@@ -1,0 +1,31 @@
+[tool.poetry]
+name = "yaqti"
+version = "0.1.0"
+description = "Yet Another QT Installer (ya-q-ti!) - A CLI for installing Qt packages and tooling; for use in enviroments like GitHub Actions or Docker"
+authors = ["WillBrennan <WillBrennan@users.noreply.github.com>"]
+license = "MIT"
+readme = "readme.md"
+repository = "https://github.com/willbrennan/yaqti"
+documentation = "https://github.com/WillBrennan/yaqti"
+keywords = ["packaging", "dependency", "qt", "qt5", "qt6", "github-actions", "github", "actions", "docker", "cli"]
+classifiers = [
+    "Topic :: Desktop Environment",
+    "Topic :: Software Development :: Build Tools",
+    "Topic :: Software Development :: User Interfaces"
+]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+click = "^8.0.1"
+requests = "py7zr"
+py7zr = "^0.16.1"
+yapf = "^0.31.0"
+xmltodict = "^0.12.0"
+pytest = "^6.2.4"
+build = "^0.5.1"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
