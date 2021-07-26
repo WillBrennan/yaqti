@@ -1,0 +1,19 @@
+name: Python Formatting (YAPF)
+on: [push, pull_request]
+jobs:
+  formatting-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: Install dependencies (poetry)
+        run: |
+          pip install poetry; 
+          poetry export -f requirements.txt --output requirements.txt --without-hashes;
+          pip install -r requirements.txt
+      - name: Test with pytest
+        run: |
+          yapf -rd .
