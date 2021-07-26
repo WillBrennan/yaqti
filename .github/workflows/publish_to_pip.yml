@@ -1,0 +1,22 @@
+name: Publish package to PIP
+on: push
+jobs:
+  build-n-publish:
+    name: Publish package to PIP
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.8
+    - name: Install dependencies (poetry)
+      run: |
+        pip install poetry; poetry install
+    - name: Build a binary wheel and a source tarball (poetry)
+      run: |
+        poetry build
+    - name: Publish distribution package to PIP
+      if: startsWith(github.ref, 'refs/tags')
+      run: |
+        poetry publish -u WillBrennan --cert ${{ secrets.PYPI_API_TOKEN }}
