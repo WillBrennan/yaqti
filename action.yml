@@ -1,0 +1,41 @@
+
+name: 'Install Qt5/Qt6 (yaqti)'
+description: 'Yet Another Qt Installer (yaqti!) - A Python based CLI installer for Qt5/Qt6 with support for Github Actions.'
+author: 'WillBrennan'
+branding:
+  icon: 'package'
+  color: 'red'
+inputs:
+  version:
+    description: 'Qt version to pick 5.15.2 or 6.2.1'
+    required: true
+  os:
+    description: 'install os; linux, windows, or mac'
+    required: true
+  platform:
+    description: 'what platform are you installing for? desktop, winrt, android, or ios'
+    required: true
+  modules:
+    description: 'what optional Qt modules to install? qtcharts, qtnetworkauth ect...'
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Python 3.x
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.x
+    - name: Install yaqti
+      shell: bash
+      run: |
+        pip install yaqti
+    - name: Install Qt 
+      shell: bash
+      run: >- 
+        python -m yaqti install 
+        --version ${{ inputs.version }}
+        --os ${{ inputs.os }}
+        --platform ${{ inputs.platform}}
+        --modules ${{ inputs.modules }}
+        --set-envs
+        --install-deps
