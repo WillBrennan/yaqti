@@ -1,5 +1,9 @@
 name: Publish package to PIP
-on: push
+
+on:
+  release:
+    types: [created]
+
 jobs:
   build-n-publish:
     name: Publish package to PIP
@@ -13,10 +17,9 @@ jobs:
     - name: Install dependencies (poetry)
       run: |
         pip install poetry; poetry install
-    - name: Build a binary wheel and a source tarball (poetry)
+    - name: 
+    - name: Build and Publish
       run: |
+        poetry version $(git describe --tags --abbrev=0)
         poetry build
-    - name: Publish distribution package to PIP
-      if: startsWith(github.ref, 'refs/tags')
-      run: |
-        poetry publish -u WillBrennan --cert ${{ secrets.PYPI_API_TOKEN }}
+        poetry publish --username ${{ secrets.PYPI_USERNAME }} --password ${{ secrets.PYPI_PASSWORD }}
