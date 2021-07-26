@@ -1,6 +1,9 @@
 import logging
 import pathlib
 from typing import List
+from os import environ
+from platform import system
+import subprocess
 
 import click
 
@@ -12,6 +15,7 @@ from .fetchers import fetch_package_infos
 from .packages import fetch_packages
 from .helpers import check
 from .helpers import configure_logging
+from .helpers import split_version
 
 
 @cli.command()
@@ -20,7 +24,9 @@ from .helpers import configure_logging
 @click.option('--platform', required=True, type=click.Choice(['desktop', 'winrt', 'android', 'ios']))
 @click.option('--output', type=str, default='./qt')
 @click.option('--modules', type=str, multiple=True)
-def install(os: str, platform: str, version: str, output: str, modules: List[str]):
+@click.option('--set-envs', type=bool, is_flag=True)
+@click.option('--install-deps', type=bool, is_flag=True)
+def install(os: str, platform: str, version: str, output: str, modules: List[str], set_envs: bool, install_deps: bool):
     versions = fetch_versions()
     assert version in versions, f'{version} is unsupported; available Qt modules are {versions}'
 
@@ -33,6 +39,20 @@ def install(os: str, platform: str, version: str, output: str, modules: List[str
 
     output = pathlib.Path(output) / version
     fetch_packages(output, packages)
+
+    if set_envs:
+        major, _, _ = split_version(version)
+        env = f'Qt{major}_DIR'
+        logging.info(f'setting enviroment variable: {env}={output}')
+        environ[env] = str(output)
+
+    if install_deps and system() == 'Linux':
+        logging.info('installing Qt dependencies')
+        run = lambda cmd: subprocess.run(cmd, shell=True, check=True)
+
+        run('apt-get update')
+        run('apt-get install build-essential libgl1-mesa-dev libxkbcommon-x11-0 libpulse-dev -y')
+        logging.info('finished installing Qt dependencies')
 
 
 if __name__ == '__main__':
