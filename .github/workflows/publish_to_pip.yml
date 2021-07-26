@@ -20,8 +20,12 @@ jobs:
     - name: Update package version
       run: |
         poetry version $(git describe --tags --abbrev=0)
-    - name: Build and publish to pypi
-      uses: JRubics/poetry-publish@v1.6
-      with:
-        python_version: 3.8
-        pypi_token: ${{ secrets.PYPI_TOKEN }}
+    - name: Build package
+      run: |
+        poetry build
+    - name: Add pypi token
+      run: | 
+        poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}
+    - name: Publish to pypi
+      run: |
+        poetry publish
