@@ -1,0 +1,39 @@
+
+name: 'Install Qt5/Qt6 (yaqti)'
+description: 'Yet Another Qt Installer (yaqti!) - A Python based CLI installer for Qt5/Qt6 with support for Github Actions.'
+author: 'WillBrennan'
+branding:
+  icon: 'package'
+  color: 'red'
+inputs:
+  version:  # id of input
+    description: 'Who to greet'
+    required: true
+  os:  # id of input
+    description: 'Who to greet'
+    required: true
+  platform:  # id of input
+    description: 'Who to greet'
+    required: true
+  modules:  # id of input
+    description: 'Who to greet'
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Python 3.x
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.x
+    - name: Install yaqti
+      run: |
+        pip install yaqti
+    - name: Install Qt 
+      run: >- 
+        python -m yaqti install 
+        --version ${{ inputs.version }}
+        --os ${{ inputs.os }}
+        --platform ${{ inputs.platform}}
+        --modules ${{ inputs.modules }}
+        --set-envs
+        --install-deps
