@@ -37,12 +37,13 @@ def install(os: str, platform: str, version: str, output: str, modules: List[str
 
     packages = fetch_package_infos(base_url, xml, modules)
 
-    output = pathlib.Path(output) / version
+    output = pathlib.Path(output)
     output = output.absolute()
 
     fetch_packages(output, packages)
 
     if set_envs:
+        output = output / version
         major, _, _ = split_version(version)
         env = f'Qt{major}_DIR'
         logging.info(f'setting enviroment variable: {env}={output}')
