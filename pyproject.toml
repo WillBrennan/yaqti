@@ -17,7 +17,8 @@ classifiers = [
 [tool.poetry.dependencies]
 python = "^3.8"
 click = "^8.0.1"
-requests = "py7zr"
+requests = "^2.31.0"
+setuptools = "*"
 py7zr = "^0.16.1"
 yapf = "^0.31.0"
 xmltodict = "^0.12.0"
